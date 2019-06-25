@@ -1,26 +1,55 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React,{Component} from 'react';
+import Chatlist from './Chatlist';
+import tmi from 'tmi.js';
+class App extends Component{
+  state={
+    chat:[
+     
+    ]
+  }
+  id=0;
+  getId=()=>{
+    return ++this.id;//현재 값에 1을 더한 값을 반환 
+  }
+  componentDidMount(){
+    const options={
+      options:{
+        debug:false
+      },
+      connection:{
+        cluster:'aws',
+        reconnect:true,
+      },
+      identity:{
+        username:'jjunici',
+        password:'oauth:dtxixnuww4sdexx066dbayftviewtj'
+      },
+      channels:['dogswellfish']
+    }
+    const client = new tmi.client(options);
+    client.connect();
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+    client.on('chat',(channel,user,message,self)=>{
+     
+       const {chat}=this.state;
+       let newChat={
+         "display-name":user['display-name'],
+         "message":message,
+         "id":this.getId()
+        }
+       this.setState({
+         "chat":[...chat,newChat]
+       })
+    })
+  }
+  render(){
+    const {chat}=this.state;
+ 
+    return(  
+      <Chatlist chat={chat}/>
+   
 
+    )
+  }
+};
 export default App;
