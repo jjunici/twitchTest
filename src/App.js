@@ -21,10 +21,10 @@ class App extends Component{
         reconnect:true,
       },
       identity:{
-        username:'jjunici',
+        username:'NightBot',
         password:'oauth:dtxixnuww4sdexx066dbayftviewtj'
       },
-      channels:['dogswellfish']
+      channels:['sonycast_']
     }
     const client = new tmi.client(options);
     client.connect();
